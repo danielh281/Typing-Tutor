@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.dh.typing.tutor;
 
 import java.util.HashMap;
 import java.util.Map;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -16,37 +13,40 @@ import javafx.scene.layout.GridPane;
  */
 public class VirtualKeyboard {
     private GridPane root;
-    private Map<String, Button> keyBtns;
-    
-    private static String[][] keys = new String[][] {
-        {"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"},
-        {"A", "S", "D", "F", "G", "H", "J", "K", "L"},
-        {"SHIFT", "Z", "X", "C", "V", "B", "N", "M"}
-    };
-    
+    private Map<KeyCode, Button> keyBtns;
+
     public VirtualKeyboard() {
         root = new GridPane();
         keyBtns = new HashMap<>();
         
-        for (int i = 0; i < keys.length; i++) {
-            String[] rowOfKeys = keys[i];
+        for (int i = 0; i < Config.HANDLED_KEYS.length; i++) {
+            String[] rowOfKeys = Config.HANDLED_KEYS[i];
             
             GridPane rowGrid = new GridPane(1, rowOfKeys.length);
+            rowGrid.setAlignment(Pos.CENTER);
             root.add(rowGrid, 0, i);
             
             for (int j = 0; j < rowOfKeys.length; j++) {
                 String key = rowOfKeys[j];
                 
-                Button keyBtn = new Button(key);
-                keyBtn.setMinHeight(30);
-                
-                if (!key.equals("SHIFT")) {
-                    // Makes all normal keys the same square size
-                    keyBtn.setMinWidth(30);
+                if (key.isEmpty()) {
+                    continue;
                 }
                 
+                Button keyBtn = new Button(key);
+                keyBtn.setMinHeight(30);
+                keyBtn.setFocusTraversable(false);
+                
+                int minWidth = 30;
+                
+                if (Config.MIN_BUTTON_WIDTH.get(KeyCode.getKeyCode(key)) != null) {
+                    minWidth = Config.MIN_BUTTON_WIDTH.get(KeyCode.getKeyCode(key));
+                }
+                
+                keyBtn.setMinWidth(minWidth);
+                
                 rowGrid.add(keyBtn, j, 0);
-                keyBtns.put(key, keyBtn);
+                keyBtns.put(KeyCode.getKeyCode(key), keyBtn);
             }
         }
         
@@ -65,7 +65,7 @@ public class VirtualKeyboard {
         return root;
     }
     
-    public Map<String, Button> getKeyBtns() {
-        return keyBtns;
+    public Button getKeyButton(KeyCode keyCode) {
+        return keyBtns.get(keyCode.getName());
     }
 }

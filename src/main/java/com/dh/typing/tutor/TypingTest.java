@@ -113,7 +113,7 @@ public class TypingTest {
         
         // Show the key alert
         if (keyBtn == null) {
-            displayKeyAlert("Not handled.");
+            displayKeyAlert(null);
             return;
         } else {
             if (isPressedEvent) {
@@ -156,7 +156,14 @@ public class TypingTest {
      * @param showing Whether or not to show the alert
      */
     public void displayKeyAlert(String alert) {
+        if (alert == null) {
+            invalidKeyAlert.setText("Not handled.");
+            invalidKeyAlert.setStyle("-fx-text-fill: #f24f44;");
+            return;
+        }
+        
         invalidKeyAlert.setText(alert);
+        invalidKeyAlert.setStyle("-fx-text-fill: black");
     }
     
     /**

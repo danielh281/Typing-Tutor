@@ -2,6 +2,7 @@ package com.dh.typing.tutor;
 
 import java.util.HashMap;
 import java.util.Map;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
@@ -24,6 +25,7 @@ public class VirtualKeyboard {
             
             GridPane rowGrid = new GridPane(1, rowOfKeys.length);
             rowGrid.setAlignment(Pos.CENTER);
+            rowGrid.setHgap(3);
             root.add(rowGrid, 0, i);
             
             for (int j = 0; j < rowOfKeys.length; j++) {
@@ -36,6 +38,7 @@ public class VirtualKeyboard {
                 Button keyBtn = new Button(key);
                 keyBtn.setMinHeight(30);
                 keyBtn.setFocusTraversable(false);
+                keyBtn.getStylesheets().add("releasedKey.css");
                 
                 int minWidth = 30;
                 

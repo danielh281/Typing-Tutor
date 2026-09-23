@@ -35,7 +35,7 @@ public class App extends Application {
         root.setBottom(virtualKeyboard.getRoot());
         
         // Create the scene and listen for keyboard events
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 600, 450);
         
         // Listen for keyboard inputs
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> typingTest.processKeyEvent(event));
@@ -46,6 +46,8 @@ public class App extends Application {
                 event.consume();
             }
         });
+        
+        scene.getStylesheets().add("default.css");
         
         stage.setScene(scene);
         stage.setTitle("Typing Tutor");

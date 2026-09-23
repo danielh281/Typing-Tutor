@@ -8,7 +8,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import java.util.Map;
+import javafx.geometry.Pos;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 
 /**
  *
@@ -18,7 +20,9 @@ public class TypingTest {
     private VBox root;
     private Label sentencePrompt;
     private Label invalidKeyAlert;
+    private HBox infoPanel;
     private Label accuracyMeter;
+    private Label promptIndexLbl;
     private TextField sentenceField;
     private Button nextButton;
     private Button resetButton;
@@ -32,10 +36,19 @@ public class TypingTest {
         sentencePrompt = new Label("Test");
         invalidKeyAlert = new Label();
         accuracyMeter = new Label();
+        promptIndexLbl = new Label();
+        infoPanel = new HBox(promptIndexLbl, accuracyMeter);
         sentenceField = new TextField();
         nextButton = new Button("Next");
         resetButton = new Button("Reset");
         sentenceField.setFocusTraversable(false);
+        
+        infoPanel.setSpacing(15);
+        infoPanel.setAlignment(Pos.CENTER);
+        
+        // Set IDs for the style sheet
+        sentencePrompt.setId("prompt");
+        accuracyMeter.setId("accuracy");
         
         sentenceField.setEditable(false);
         sentenceField.setMaxWidth(450);
@@ -71,7 +84,7 @@ public class TypingTest {
         root = new VBox(10,
                 invalidKeyAlert,
                 sentencePrompt,
-                accuracyMeter,
+                infoPanel,
                 sentenceField,
                 nextButton,
                 resetButton
@@ -107,8 +120,11 @@ public class TypingTest {
         }
         
         // Key animatoin logic
-        String style = isPressedEvent ? "" : "";
-        keyBtn.setStyle(style); // TODO: add css styling
+        if (isPressedEvent) {
+            keyBtn.getStylesheets().add("pressedKey.css");
+        } else {
+            keyBtn.getStylesheets().remove("pressedKey.css");
+        }
         
         // Text appending logic
         String currentText = sentenceField.getText();
@@ -147,6 +163,7 @@ public class TypingTest {
     
     public void displayPrompt(int promptIndex) {
         sentencePrompt.setText(Config.TYPING_SENTENCES[promptIndex]);
+        promptIndexLbl.setText(String.format("%d of %d.", currentPromptIndex + 1, Config.TYPING_SENTENCES.length));
     }
     
     public void updateAccuracy() {

@@ -1,0 +1,19 @@
+/* 
+    Created on : Sep 23, 2026, 12:17:35 p.m.
+    Author     : Daniel Haddadeen
+*/
+
+#prompt {
+    -fx-font-style: Tahoma;
+    -fx-font-size: 14pt;
+    -fx-font-weight: bold;
+}
+
+#accuracy {
+    -fx-text-fill: #3e3f40;
+}
+
+.label {
+    -fx-font-style: Tahoma;
+    -fx-font-weight: bold;
+}

@@ -115,15 +115,13 @@ public class TypingTest {
         if (keyBtn == null) {
             displayKeyAlert("Not handled.");
             return;
-        } else if (isPressedEvent) {
-            displayKeyAlert(keyCode.toString());
-        }
-        
-        // Key animatoin logic
-        if (isPressedEvent) {
-            keyBtn.getStylesheets().add("pressedKey.css");
         } else {
-            keyBtn.getStylesheets().remove("pressedKey.css");
+            if (isPressedEvent) {
+                displayKeyAlert(keyCode.toString());
+                virtualKeyboard.pressKey(keyCode);
+            } else {
+                virtualKeyboard.releaseKey(keyCode);
+            }
         }
         
         // Text appending logic
@@ -161,11 +159,19 @@ public class TypingTest {
         invalidKeyAlert.setText(alert);
     }
     
+    /**
+     * Displays the prompt text according to the index.
+     * This will update the prompt text and it will additionally update the prompt index label.
+     * @param promptIndex The index of the prompt to display.
+     */
     public void displayPrompt(int promptIndex) {
         sentencePrompt.setText(Config.TYPING_SENTENCES[promptIndex]);
         promptIndexLbl.setText(String.format("%d of %d.", currentPromptIndex + 1, Config.TYPING_SENTENCES.length));
     }
     
+    /**
+     * Updates the accuracy of the user input compared to the prompt text.
+     */
     public void updateAccuracy() {
         char[] promptChars = currentPrompt.toCharArray();
         char[] inputChars = sentenceField.getText().toCharArray();

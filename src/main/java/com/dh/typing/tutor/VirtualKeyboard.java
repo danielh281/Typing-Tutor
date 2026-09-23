@@ -63,17 +63,33 @@ public class VirtualKeyboard {
     }
     
     /**
-     * Animates a key press on the virtual keyboard
+     * Applies visuals for the key press on the corresponding key button
+     * @param keyCode The KeyCode of the button to apply the visuals to
      */
-    public void pressKey() {
-        
+    public void pressKey(KeyCode keyCode) {
+        Button keyBtn = getKeyButton(keyCode);
+        keyBtn.getStylesheets().add("pressedKey.css");
+    }
+    
+    /**
+     * Removes pressed visuals for the corresponding key button
+     * @param keyCode The KeyCode of the button to remove the visuals from
+     */
+    public void releaseKey(KeyCode keyCode) {
+        Button keyBtn = getKeyButton(keyCode);
+        keyBtn.getStylesheets().remove("releasedKey.css");
+    }
+    
+    /**
+     * Fetches and returns the key button on the virtual keyboard according to a KeyCode.
+     * @param keyCode The KeyCode of the key.
+     * @return The corresponding key button, if it exists.
+     */
+    public Button getKeyButton(KeyCode keyCode) {
+        return keyBtns.get(keyCode);
     }
     
     public GridPane getRoot() {
         return root;
-    }
-    
-    public Button getKeyButton(KeyCode keyCode) {
-        return keyBtns.get(keyCode);
     }
 }

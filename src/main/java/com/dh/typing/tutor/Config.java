@@ -26,18 +26,26 @@ public class Config {
         {"Space"}
     };
     
-    public static final Map<KeyCode, String> SPECIAL_SYMBOLS = new HashMap() {
+    public static final Map<KeyCode, String> SPECIAL_SYMBOLS = new HashMap<>() {
         {
             KeyCode[] specialKeyCodes = new KeyCode[] {
-                KeyCode.COMMA, KeyCode.PERIOD, KeyCode.SEMICOLON, 
+                KeyCode.COMMA, KeyCode.PERIOD, KeyCode.SEMICOLON,
                 KeyCode.QUOTE, KeyCode.MINUS, KeyCode.EQUALS,
-                KeyCode.SLASH,
+                KeyCode.SLASH, KeyCode.DIGIT1, KeyCode.DIGIT2, 
+                KeyCode.DIGIT3, KeyCode.DIGIT4, KeyCode.DIGIT5,
+                KeyCode.DIGIT6, KeyCode.DIGIT7, KeyCode.DIGIT8,
+                KeyCode.DIGIT9, KeyCode.DIGIT0, KeyCode.SPACE,
             };
-            
+
             String[] specialSymbols = new String[] {
-                ",", ".", ";", "'", "-", "=", "/"
+                ",", ".", ";",
+                "'", "-", "=",
+                "/", "1", "2",
+                "3", "4", "5",
+                "6", "7", "8",
+                "9", "0", " ",
             };
-            
+
             for (int i = 0; i < specialKeyCodes.length; i++) {
                 put(specialKeyCodes[i], specialSymbols[i]);
             }
@@ -68,6 +76,32 @@ public class Config {
                 put(shiftModifiedKeyCodes[i], shiftModifiedSymbols[i]);
             }
         };
+    };
+    
+    public static final Map<String, KeyCode> SYMBOL_TO_KEYCODE = new HashMap<>() {
+        {
+            String[] symbols = new String[] {
+                ",", ".", ";",
+                "'", "-", "=",
+                "/", "1", "2",
+                "3", "4", "5",
+                "6", "7", "8",
+                "9", "0", " "
+            };
+
+            KeyCode[] keyCodes = new KeyCode[] {
+                KeyCode.COMMA, KeyCode.PERIOD, KeyCode.SEMICOLON,
+                KeyCode.QUOTE, KeyCode.MINUS, KeyCode.EQUALS,
+                KeyCode.SLASH, KeyCode.DIGIT1, KeyCode.DIGIT2,
+                KeyCode.DIGIT3, KeyCode.DIGIT4, KeyCode.DIGIT5,
+                KeyCode.DIGIT6, KeyCode.DIGIT7, KeyCode.DIGIT8,
+                KeyCode.DIGIT9, KeyCode.DIGIT0, KeyCode.SPACE
+            };
+
+            for (int i = 0; i < symbols.length; i++) {
+                put(symbols[i], keyCodes[i]);
+            }
+        }  
     };
     
     public static final Map<KeyCode, Integer> MIN_BUTTON_WIDTH = new HashMap<>(Map.of(

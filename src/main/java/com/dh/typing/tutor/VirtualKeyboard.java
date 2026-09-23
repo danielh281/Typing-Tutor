@@ -46,7 +46,12 @@ public class VirtualKeyboard {
                 keyBtn.setMinWidth(minWidth);
                 
                 rowGrid.add(keyBtn, j, 0);
-                keyBtns.put(KeyCode.getKeyCode(key), keyBtn);
+                
+                KeyCode keyCode = (KeyCode.getKeyCode(key) != null) ?
+                        KeyCode.getKeyCode(key) : Config.SYMBOL_TO_KEYCODE.get(key);
+                
+                System.out.println(keyCode);
+                keyBtns.put(keyCode, keyBtn);
             }
         }
         

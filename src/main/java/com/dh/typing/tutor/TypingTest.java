@@ -78,8 +78,10 @@ public class TypingTest {
         
         resetButton.setFocusTraversable(false);
         
-        // Show initial prompt
+        // Show initial state
         displayPrompt(0);
+        displayKeyAlert("");
+        updateAccuracy();
         
         root = new VBox(10,
                 invalidKeyAlert,
@@ -89,8 +91,6 @@ public class TypingTest {
                 nextButton,
                 resetButton
         );
-        
-        updateAccuracy();
     }
     
     /**

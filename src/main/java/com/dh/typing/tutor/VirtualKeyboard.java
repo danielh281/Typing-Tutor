@@ -66,6 +66,6 @@ public class VirtualKeyboard {
     }
     
     public Button getKeyButton(KeyCode keyCode) {
-        return keyBtns.get(keyCode.getName());
+        return keyBtns.get(keyCode);
     }
 }

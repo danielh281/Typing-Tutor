@@ -46,7 +46,9 @@ public class TypingTest {
             currentPromptIndex = (currentPromptIndex + 1) % Config.TYPING_SENTENCES.length;
             currentPrompt = Config.TYPING_SENTENCES[currentPromptIndex];
             displayPrompt(currentPromptIndex);
+            displayKeyAlert("");
             sentenceField.setText("");
+            updateAccuracy();
         });
         
         nextButton.setFocusTraversable(false);
@@ -56,8 +58,9 @@ public class TypingTest {
             currentPromptIndex = 0;
             currentPrompt = Config.TYPING_SENTENCES[currentPromptIndex];
             displayPrompt(currentPromptIndex);
-            sentenceField.setText("");
             displayKeyAlert("");
+            sentenceField.setText("");
+            updateAccuracy();
         });
         
         resetButton.setFocusTraversable(false);
@@ -66,12 +69,15 @@ public class TypingTest {
         displayPrompt(0);
         
         root = new VBox(10,
-                sentencePrompt,
                 invalidKeyAlert,
+                sentencePrompt,
+                accuracyMeter,
                 sentenceField,
                 nextButton,
                 resetButton
         );
+        
+        updateAccuracy();
     }
     
     /**
@@ -122,13 +128,13 @@ public class TypingTest {
             if (symbol != null) {
                 sentenceField.setText(currentText + symbol);
             }
-            
-            return;
         } else {
             // Create the letter in either uppercase or lowercase
             String letter = (event.isShiftDown()) ? keyCode.toString() : keyCode.toString().toLowerCase();
             sentenceField.setText(currentText + letter);
         }
+        
+        updateAccuracy();
     }
     
     /**
@@ -141,6 +147,33 @@ public class TypingTest {
     
     public void displayPrompt(int promptIndex) {
         sentencePrompt.setText(Config.TYPING_SENTENCES[promptIndex]);
+    }
+    
+    public void updateAccuracy() {
+        char[] promptChars = currentPrompt.toCharArray();
+        char[] inputChars = sentenceField.getText().toCharArray();
+        
+        double totalChars = promptChars.length;
+        double correctChars = 0;
+        
+        for (int i = 0; i < promptChars.length; i++) {
+            Character correctChar = promptChars[i];
+            Character inputChar = null;
+            
+            if (i >= 0 && inputChars.length > 0 && i < inputChars.length) {
+                inputChar = inputChars[i];
+                System.out.println("Found character: " + inputChar);
+            }
+            
+            if (inputChar != null && inputChar.equals(correctChar)) {
+                correctChars++;
+                System.out.println("Correct character");
+            }
+        }
+        
+        double correctPercentange = (correctChars / totalChars) * 100;
+        
+        accuracyMeter.setText(String.format("Accuracy: %.1f [%.0f/%.0f]", correctPercentange, correctChars, totalChars));
     }
    
     public VBox getRoot() {

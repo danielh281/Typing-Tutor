@@ -77,7 +77,7 @@ public class VirtualKeyboard {
      */
     public void releaseKey(KeyCode keyCode) {
         Button keyBtn = getKeyButton(keyCode);
-        keyBtn.getStylesheets().remove("releasedKey.css");
+        keyBtn.getStylesheets().remove("pressedKey.css");
     }
     
     /**

@@ -11,7 +11,7 @@ import javafx.scene.input.KeyCode;
 
 
 /**
- * 
+ * GitHub Repository Link: https://github.com/danielh281/Typing-Tutor
  * @author Daniel Haddadeen
  */
 public class App extends Application {

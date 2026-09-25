@@ -1,14 +1,11 @@
 package com.dh.typing.tutor;
 
-import java.util.HashMap;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import java.util.Map;
 import javafx.geometry.Insets;
 import javafx.scene.input.KeyCode;
 

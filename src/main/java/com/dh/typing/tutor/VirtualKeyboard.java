@@ -2,7 +2,6 @@ package com.dh.typing.tutor;
 
 import java.util.HashMap;
 import java.util.Map;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
@@ -35,6 +34,19 @@ public class VirtualKeyboard {
                     continue;
                 }
                 
+                KeyCode keyCode = KeyCode.getKeyCode(key);
+                
+                // Fetches the corresponding keyCode if the key has a specific string
+                if (keyCode == null) {
+                    KeyCode correspondingCode = Config.SYMBOL_TO_KEYCODE.get(key);
+                    
+                    if (correspondingCode != null) {
+                        keyCode = correspondingCode;
+                    } else {
+                        continue;
+                    }
+                }
+                
                 Button keyBtn = new Button(key);
                 keyBtn.setMinHeight(30);
                 keyBtn.setFocusTraversable(false);
@@ -42,18 +54,13 @@ public class VirtualKeyboard {
                 
                 int minWidth = 30;
                 
-                if (Config.MIN_BUTTON_WIDTH.get(KeyCode.getKeyCode(key)) != null) {
-                    minWidth = Config.MIN_BUTTON_WIDTH.get(KeyCode.getKeyCode(key));
+                if (Config.MIN_BUTTON_WIDTH.get(keyCode) != null) {
+                    minWidth = Config.MIN_BUTTON_WIDTH.get(keyCode);
                 }
                 
                 keyBtn.setMinWidth(minWidth);
-                
                 rowGrid.add(keyBtn, j, 0);
                 
-                KeyCode keyCode = (KeyCode.getKeyCode(key) != null) ?
-                        KeyCode.getKeyCode(key) : Config.SYMBOL_TO_KEYCODE.get(key);
-                
-                System.out.println(keyCode);
                 keyBtns.put(keyCode, keyBtn);
             }
         }
@@ -68,7 +75,10 @@ public class VirtualKeyboard {
      */
     public void pressKey(KeyCode keyCode) {
         Button keyBtn = getKeyButton(keyCode);
-        keyBtn.getStylesheets().add("pressedKey.css");
+        
+        if (keyBtn != null && !keyBtn.getStylesheets().contains("pressedKey.css")) {
+            keyBtn.getStylesheets().add("pressedKey.css");
+        }
     }
     
     /**
@@ -77,7 +87,10 @@ public class VirtualKeyboard {
      */
     public void releaseKey(KeyCode keyCode) {
         Button keyBtn = getKeyButton(keyCode);
-        keyBtn.getStylesheets().remove("pressedKey.css");
+        
+        if (keyBtn != null) {
+            keyBtn.getStylesheets().remove("pressedKey.css");
+        }
     }
     
     /**

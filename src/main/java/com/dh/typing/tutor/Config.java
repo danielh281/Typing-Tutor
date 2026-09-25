@@ -9,15 +9,17 @@ import javafx.scene.input.KeyCode;
  * @author Daniel Haddadeen
  */
 public class Config {
+    // The sentences that will be prompted to the user
     public static final String[] TYPING_SENTENCES = new String[] {
-        "Try typing this test. Do it as quickly and accurately as you can.",
+        "Try typing this text. Do it as quickly and accurately as you can.",
         "Next type another line of input data.",
-        "The quick brown fox jumps over the lazy dog",
-        "Five big quacking zephyrs jolt my wax bed",
-        "Sympathizing would fix Quaker objectives",
+        "The quick brown fox jumps over the lazy dog.",
+        "Five big quacking zephyrs jolt my wax bed.",
+        "Sympathizing would fix Quaker objectives.",
         "A large fawn jumped quickly over white zinc boxes."
     };
     
+    // Keys that will be loaded onto the keyboard
     public static final String[][] HANDLED_KEYS = new String[][] {
         {"", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace"},
         {"", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"},
@@ -26,6 +28,7 @@ public class Config {
         {"Space"}
     };
     
+    // Maps special keycodes to their corresponding symbols
     public static final Map<KeyCode, String> SPECIAL_SYMBOLS = new HashMap<>() {
         {
             KeyCode[] specialKeyCodes = new KeyCode[] {
@@ -52,6 +55,7 @@ public class Config {
         }
     };
     
+    // Maps the keycodes of certain symbols to their respective modified strings/characters
     public static final Map<KeyCode, String> SHIFT_MODIFIED_SYMBOLS = new HashMap() {
         {
             KeyCode[] shiftModifiedKeyCodes = new KeyCode[] {
@@ -78,6 +82,7 @@ public class Config {
         };
     };
     
+    // Maps the string version of symbols to their respective keycodes
     public static final Map<String, KeyCode> SYMBOL_TO_KEYCODE = new HashMap<>() {
         {
             String[] symbols = new String[] {
@@ -104,6 +109,7 @@ public class Config {
         }  
     };
     
+    // The minimum button width for special buttons
     public static final Map<KeyCode, Integer> MIN_BUTTON_WIDTH = new HashMap<>(Map.of(
             KeyCode.SPACE, 200,
             KeyCode.SHIFT, 60,

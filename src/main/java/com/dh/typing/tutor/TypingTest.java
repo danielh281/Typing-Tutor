@@ -2,7 +2,6 @@ package com.dh.typing.tutor;
 
 import java.util.HashMap;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
@@ -61,7 +60,7 @@ public class TypingTest {
             displayPrompt(currentPromptIndex);
             displayKeyAlert("");
             sentenceField.setText("");
-            updateAccuracy();
+            updateKeystrokesAccuracy();
         });
         
         nextButton.setFocusTraversable(false);
@@ -73,7 +72,7 @@ public class TypingTest {
             displayPrompt(currentPromptIndex);
             displayKeyAlert("");
             sentenceField.setText("");
-            updateAccuracy();
+            updateKeystrokesAccuracy();
         });
         
         resetButton.setFocusTraversable(false);
@@ -81,7 +80,7 @@ public class TypingTest {
         // Show initial state
         displayPrompt(0);
         displayKeyAlert("");
-        updateAccuracy();
+        updateKeystrokesAccuracy();
         
         root = new VBox(10,
                 invalidKeyAlert,
@@ -102,8 +101,8 @@ public class TypingTest {
         boolean isPressedEvent = event.getEventType() == KeyEvent.KEY_PRESSED;
         Boolean isPressed = pressedKeys.get(keyCode);
         
-        // Prevents the key event from being triggered multiple times
-        if (isPressed != null && isPressedEvent == isPressed) {
+        // Prevents the key event from being triggered multiple times (unless its backspace)
+        if (isPressed != null && isPressedEvent == isPressed && event.getCode() != KeyCode.BACK_SPACE) {
             return;
         }
         
@@ -117,7 +116,7 @@ public class TypingTest {
             return;
         } else {
             if (isPressedEvent) {
-                displayKeyAlert(keyCode.toString());
+                displayKeyAlert(keyBtn.getText());
                 virtualKeyboard.pressKey(keyCode);
             } else {
                 virtualKeyboard.releaseKey(keyCode);
@@ -134,13 +133,19 @@ public class TypingTest {
             int endIdx = Math.max(currentText.length() - 1, 0);
             sentenceField.setText(currentText.substring(0, endIdx));
         } else if (!keyCode.isLetterKey()){
+            boolean isSymbol = Config.SPECIAL_SYMBOLS.get(keyCode) != null;
+
             // Use the corresponding symbol depending if shift is pressed
-            String symbol = (event.isShiftDown()) ? 
+            if (isSymbol) {
+                String symbol = (event.isShiftDown()) ? 
                     Config.SHIFT_MODIFIED_SYMBOLS.get(keyCode)
                     : Config.SPECIAL_SYMBOLS.get(keyCode);
             
-            if (symbol != null) {
-                sentenceField.setText(currentText + symbol);
+                if (symbol != null) {
+                    sentenceField.setText(currentText + symbol);
+                } else {
+                    sentenceField.setText(currentText + Config.SPECIAL_SYMBOLS.get(keyCode));
+                }
             }
         } else {
             // Create the letter in either uppercase or lowercase
@@ -148,7 +153,7 @@ public class TypingTest {
             sentenceField.setText(currentText + letter);
         }
         
-        updateAccuracy();
+        updateKeystrokesAccuracy();
     }
     
     /**
@@ -179,12 +184,12 @@ public class TypingTest {
     /**
      * Updates the accuracy of the user input compared to the prompt text.
      */
-    public void updateAccuracy() {
+    public void updateKeystrokesAccuracy() {
         char[] promptChars = currentPrompt.toCharArray();
         char[] inputChars = sentenceField.getText().toCharArray();
         
-        double totalChars = promptChars.length;
         double correctChars = 0;
+        double incorrectChars = 0;
         
         for (int i = 0; i < promptChars.length; i++) {
             Character correctChar = promptChars[i];
@@ -192,18 +197,22 @@ public class TypingTest {
             
             if (i >= 0 && inputChars.length > 0 && i < inputChars.length) {
                 inputChar = inputChars[i];
-                System.out.println("Found character: " + inputChar);
             }
             
-            if (inputChar != null && inputChar.equals(correctChar)) {
-                correctChars++;
-                System.out.println("Correct character");
+            if (inputChar != null) {
+                if (inputChar.equals(correctChar)) {
+                    correctChars++;
+                } else {
+                    incorrectChars++;
+                }
             }
         }
         
-        double correctPercentange = (correctChars / totalChars) * 100;
+        // Make the minimum of typed chars 1 so we dont get accuracy NaN
+        double typedChars = Math.max(correctChars + incorrectChars, 1);
+        double correctPercentage = (correctChars / typedChars) * 100;
         
-        accuracyMeter.setText(String.format("Accuracy: %.1f [%.0f/%.0f]", correctPercentange, correctChars, totalChars));
+        accuracyMeter.setText(String.format("Accuracy: %.1f%% [%.0f Errors/%.0f Correct]", correctPercentage, incorrectChars , correctChars));
     }
    
     public VBox getRoot() {
